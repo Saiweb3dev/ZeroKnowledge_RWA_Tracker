@@ -1,0 +1,11 @@
+
+TARGETS
+Week - 1
+{
+1)NFT contract with like mint,metadata and transfer etc functions
+2)unit test for the NFT contract
+3)a function to send somekind of like data to verifier
+4)a contract to store the the proof from nft
+5)adding functionality to this contract like 
+
+}
