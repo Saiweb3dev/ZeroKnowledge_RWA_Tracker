@@ -3,6 +3,14 @@ TARGETS
 Week - 1
 {
 1)NFT contract with like mint,metadata and transfer etc functions
+NFT contract future functions idea ->
+{
+  fractionalizeAsset: This allows an asset to be fractionalized among multiple shareholders.
+  Asset Locking: This allows locking assets to prevent transfers for a period of time.
+  Asset History: This keeps track of all transfers for each asset.
+  Asset Valuation Update: This allows updating the value of an asset over time.
+  Asset Details: This allows you to store and retrieve additional details about each tokenized asset.
+}
 2)unit test for the NFT contract
 3)a function to send somekind of like data to verifier
 4)a contract to store the the proof from nft
