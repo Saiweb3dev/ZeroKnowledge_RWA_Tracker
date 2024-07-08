@@ -1,0 +1,22 @@
+def main(private field ownerAddress, private field tokenId, private field carNumber, 
+         private field ipfsOwnerAddress, private field ipfsTokenId, private field ipfsCarNumber,
+         field publicIpfsHash) -> (field):
+    
+    // Verify that the provided data matches the IPFS data
+    assert(ownerAddress == ipfsOwnerAddress)
+    assert(tokenId == ipfsTokenId)
+    assert(carNumber == ipfsCarNumber)
+    
+    // Verify that the IPFS hash matches (you'd need a way to represent the hash as a field)
+    ipfsHashValid = verifyIpfsHash(ipfsOwnerAddress, ipfsTokenId, ipfsCarNumber, publicIpfsHash)
+    
+    // Check if the search item (carNumber) matches
+    carMatch = if carNumber == ipfsCarNumber then 1 else 0 fi
+    
+    // Return 1 if all conditions are met, 0 otherwise
+    return if ipfsHashValid == 1 && carMatch == 1 then 1 else 0 fi
+
+def verifyIpfsHash(field ownerAddress, field tokenId, field carNumber, field ipfsHash) -> (field):
+    // Implementation to verify that the given data corresponds to the IPFS hash
+    // This is a placeholder and would need a real implementation
+    return 1
