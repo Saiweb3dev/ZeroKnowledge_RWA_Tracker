@@ -16,4 +16,32 @@ NFT contract future functions idea ->
 4)a contract to store the the proof from nft
 5)adding functionality to this contract like
 
+ZKP idea -> {
+  1)IPFS Data Structure:
+Let's assume the IPFS hash (e.g., newhash123) points to a JSON file with this structure:
+{
+  "ownerAddress": "0x1234...",
+  "tokenId": "123",
+  "carNumber": "TN01EB2005",
+  "otherDetails": "..."
+}
+
+ 2)Backend Script:
+ -> Take input: buyer's address, tokenId, and search item (car number)
+  ->Query the IPFS hash for the given address and tokenId
+    ->Retrieve the data from IPFS
+      ->Call the Zokrates prover function with the necessary data
+
+}
+ 3)Prover Workflow:
+Your backend calls the Zokrates prover with:
+
+-> Private inputs: ownerAddress, tokenId, carNumber (from buyer), and the data from IPFS
+-> Public input: IPFS hash
+ --->Zokrates generates a proof
+
+ 4)Verification Process:
+-> The buyer receives the proof from your backend
+-> They call the verifier contract with the proof and the public input (IPFS hash)
+-> The verifier contract returns true if the proof is valid, false otherwise
 }
