@@ -1,0 +1,73 @@
+{
+  "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "abi": [
+    {
+      "type": "function",
+      "name": "verifyTx",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "tuple",
+          "name": "proof",
+          "components": [
+            {
+              "type": "tuple",
+              "name": "a",
+              "components": [
+                {
+                  "type": "uint256",
+                  "name": "X"
+                },
+                {
+                  "type": "uint256",
+                  "name": "Y"
+                }
+              ]
+            },
+            {
+              "type": "tuple",
+              "name": "b",
+              "components": [
+                {
+                  "type": "uint256[2]",
+                  "name": "X"
+                },
+                {
+                  "type": "uint256[2]",
+                  "name": "Y"
+                }
+              ]
+            },
+            {
+              "type": "tuple",
+              "name": "c",
+              "components": [
+                {
+                  "type": "uint256",
+                  "name": "X"
+                },
+                {
+                  "type": "uint256",
+                  "name": "Y"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "uint256[45]",
+          "name": "input"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": "r"
+        }
+      ]
+    }
+  ],
+  "numDeployments": 1
+}
