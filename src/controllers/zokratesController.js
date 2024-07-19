@@ -6,7 +6,7 @@ const execPromise = util.promisify(exec);
 
 // Construct the relative path
 const ZOK_FILE_PATH = path.resolve(__dirname, '..', '..', 'zokrates', 'circuits', 'Zok_Prover.zok');
-const ZOKRATES_PATH = 'zokrates'; // Assuming zokrates is in your PATH. If not, provide the full path.
+const ZOKRATES_PATH = 'zokrates'; 
 
 const runZokrates = async (req, res) => {
     try {
@@ -29,12 +29,19 @@ const runZokrates = async (req, res) => {
         // Generate proof
         const { stdout: generateProofOutput } = await execPromise(`${ZOKRATES_PATH} generate-proof`);
 
+        // Verify proof
+        const { stdout: verifyOutput } = await execPromise(`${ZOKRATES_PATH} verify`);
+
+        const verificationResult = verifyOutput.includes('PASSED') ? 'Verification passed' : 'Verification failed';
+
         res.json({
             message: 'Zokrates operations completed successfully',
             compileOutput,
             setupOutput,
             computeWitnessOutput,
-            generateProofOutput
+            generateProofOutput,
+            verificationResult,
+            verifyOutput
         });
     } catch (error) {
         console.error(`Error: ${error.message}`);
