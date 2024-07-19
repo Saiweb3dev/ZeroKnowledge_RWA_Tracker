@@ -1,20 +1,45 @@
 {
   "inputs": [
     {
-      "name": "a",
-      "public": false,
+      "name": "reqAddress",
+      "public": true,
+      "type": "array",
+      "components": {
+        "size": 20,
+        "type": "field"
+      }
+    },
+    {
+      "name": "reqId",
+      "public": true,
       "type": "field"
     },
     {
-      "name": "b",
+      "name": "reqData",
+      "public": true,
+      "type": "field"
+    },
+    {
+      "name": "OrgAddress",
+      "public": true,
+      "type": "array",
+      "components": {
+        "size": 20,
+        "type": "field"
+      }
+    },
+    {
+      "name": "OrgId",
+      "public": true,
+      "type": "field"
+    },
+    {
+      "name": "OrgData",
       "public": true,
       "type": "field"
     }
   ],
   "output": {
-    "type": "tuple",
-    "components": {
-      "elements": []
-    }
+    "type": "bool"
   }
 }
