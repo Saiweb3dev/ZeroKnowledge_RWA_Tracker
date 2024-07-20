@@ -2,18 +2,21 @@
 def main(
     field[20] reqAddress, 
     field reqId, 
-    field reqData, 
+    field[4] reqKey, 
     field[20] OrgAddress, 
     field OrgId, 
-    field OrgData
+    field[4] OrgKey
 ) -> bool {
     bool mut isAddressEqual = true;
     for u32 i in 0..20 {
         isAddressEqual = isAddressEqual && (reqAddress[i] == OrgAddress[i]);
     }
+     bool mut isKeyEqual = true;
+    for u32 i in 0..4{
+       isKeyEqual = isKeyEqual && (reqKey[i] == OrgKey[i]);
+    }
 
     bool isIdEqual = reqId == OrgId;
-    bool isDataEqual = reqData == OrgData;
 
-    return isAddressEqual && isIdEqual && isDataEqual;
+    return isAddressEqual && isIdEqual && isKeyEqual;
 }
