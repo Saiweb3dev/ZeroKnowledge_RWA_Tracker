@@ -15,9 +15,13 @@
       "type": "field"
     },
     {
-      "name": "reqData",
+      "name": "reqKey",
       "public": true,
-      "type": "field"
+      "type": "array",
+      "components": {
+        "size": 4,
+        "type": "field"
+      }
     },
     {
       "name": "OrgAddress",
@@ -34,9 +38,13 @@
       "type": "field"
     },
     {
-      "name": "OrgData",
+      "name": "OrgKey",
       "public": true,
-      "type": "field"
+      "type": "array",
+      "components": {
+        "size": 4,
+        "type": "field"
+      }
     }
   ],
   "output": {
