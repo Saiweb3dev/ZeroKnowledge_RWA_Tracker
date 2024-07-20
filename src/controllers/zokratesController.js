@@ -8,9 +8,9 @@ const execPromise = util.promisify(exec);
 const ZOK_FILE_PATH = path.resolve(__dirname, '..', '..', 'zokrates', 'circuits', 'Zok_Prover.zok');
 const ZOKRATES_PATH = 'zokrates'; 
 
-const runZokrates = async (req, res) => {
+const runZokrates = async (ethData) => {
     try {
-        const { reqAddress, reqId, reqData, OrgAddress, OrgId, OrgData } = req.body;
+        const { id, addressFields, stringFields, dbAddressFields, dbStringFields, dbId, finalResult } = ethData;
 
         console.log(`Using Zokrates file: ${ZOK_FILE_PATH}`);
 
@@ -21,7 +21,7 @@ const runZokrates = async (req, res) => {
         const { stdout: setupOutput } = await execPromise(`${ZOKRATES_PATH} setup`);
 
         // Prepare the witness arguments
-        const witnessArgs = [...reqAddress, reqId, reqData, ...OrgAddress, OrgId, OrgData].join(' ');
+        const witnessArgs = [...addressFields, id, ...stringFields, ...dbAddressFields, dbId, ...dbStringFields].join(' ');
 
         // Compute witness
         const { stdout: computeWitnessOutput } = await execPromise(`${ZOKRATES_PATH} compute-witness -a ${witnessArgs}`);
@@ -34,7 +34,7 @@ const runZokrates = async (req, res) => {
 
         const verificationResult = verifyOutput.includes('PASSED') ? 'Verification passed' : 'Verification failed';
 
-        res.json({
+        return{
             message: 'Zokrates operations completed successfully',
             compileOutput,
             setupOutput,
@@ -42,10 +42,11 @@ const runZokrates = async (req, res) => {
             generateProofOutput,
             verificationResult,
             verifyOutput
-        });
+        };
     } catch (error) {
         console.error(`Error: ${error.message}`);
-        res.status(500).json({ error: 'Zokrates execution failed', details: error.message });
+        console.error(`Error in runZokrates: ${error.message}`);
+        throw error;
     }
 };
 
