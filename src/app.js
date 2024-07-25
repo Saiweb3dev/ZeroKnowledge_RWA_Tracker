@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const nftRoutes = require("./routes/nft")
 // Middleware
 app.use(express.json());
 const corsOptions = {
@@ -11,6 +12,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 // Routes
+app.use('/api/nft',nftRoutes)
 app.use('/api', require('./routes/api'));
 
 // Error handling middleware
