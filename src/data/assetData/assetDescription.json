@@ -1,0 +1,30 @@
+{
+  "1": {
+    "name": "Virtus",
+    "description": "The Virtus is a luxury sedan celebrated for its expansive interior and cutting-edge safety technologies. Available in Trendline, Comfortline, and Highline variants, it offers a blend of elegance, comfort, and advanced features.",
+    "variants": ["Trendline", "Comfortline", "Highline"],
+    "price": "0.6",
+    "image": "/virtus.webp"
+  },
+  "2": {
+    "name": "XUV-300",
+    "description": "The XUV-300 is a compact SUV acclaimed for its exceptional fuel efficiency and robust performance. With options including W4, W6, and W8 variants, it combines versatility with power, catering to both urban and off-road adventures.",
+    "variants": ["W4", "W6", "W8"],
+    "price": "0.4",
+    "image": "/xuv-3xo.webp"
+  },
+  "3": {
+    "name": "Creta",
+    "description": "The Creta is a mid-size SUV equipped with state-of-the-art technology and superior comfort amenities. Offering E, EX, S, and SX variants, it stands out for its modern design, spaciousness, and comprehensive safety features.",
+    "variants": ["E", "EX", "S", "SX"],
+    "price": "0.5",
+    "image": "/creta.webp"
+  },
+  "4": {
+    "name": "Innova Crysta",
+    "description": "The Innova Crysta is a versatile MPV designed for family trips, blending reliability with spacious interiors. Available in G, GX, and VX variants, it promises comfort, durability, and a smooth ride, making it an ideal choice for long journeys.",
+    "variants": ["G", "GX", "VX"],
+    "price": "0.8",
+    "image": "/innova-crysta.webp"
+  }
+}

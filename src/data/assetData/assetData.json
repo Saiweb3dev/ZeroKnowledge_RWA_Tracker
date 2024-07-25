@@ -1,0 +1,6 @@
+[
+  { "id": "1", "name": "Virtus Car NFT", "image": "/virtus.webp", "price": "0.6" },
+  { "id": "2", "name": "Xuv-3xo Car NFT", "image": "/xuv-3xo.webp", "price": "0.4" },
+  { "id": "3", "name": "Creta Car NFT", "image": "/creta.webp", "price": "0.5" },
+  { "id": "4", "name": "Innova-crysta Car NFT", "image": "/innova-crysta.webp", "price": "0.8" }
+]
