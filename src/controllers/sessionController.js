@@ -6,7 +6,6 @@ const crypto = require('crypto'); // Cryptography functions for generating uniqu
 // Define constants for session and user key database paths
 const SESSION_DATA_PATH = path.join(__dirname, '..', 'data', 'sessionDatabase');
 const USER_KEY_DATABASE = path.join(__dirname, '..', 'data', 'userKeyDatabase.json');
-console.log('Session data path:', SESSION_DATA_PATH);
 
 /**
  * Ensures the session directory exists, creating it if necessary.
@@ -14,7 +13,6 @@ console.log('Session data path:', SESSION_DATA_PATH);
 async function ensureSessionDirectoryExists() {
   try {
     await fs.mkdir(SESSION_DATA_PATH, { recursive: true });
-    console.log('Session directory ensured at:', SESSION_DATA_PATH);
   } catch (error) {
     console.error('Error ensuring session directory exists:', error);
   }
