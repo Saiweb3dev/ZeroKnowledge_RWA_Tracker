@@ -1,47 +1,66 @@
 // controllers/nftController.js
 
 const { ethers } = require('ethers');
-const nftMinterData = require('../../models/nftMinterData'); // Adjust the path as needed
-const {  provider, contract, contractAddress, contractABI } = require('../../config/ethConfig.js'); // Import the shared config
+const nftMinterData = require('../../models/nftMinterData');
+const { contractAddress, contractABI } = require('../../config/ethConfig.js');
+const { pinJSONtoIPFS } = require('../../models/pinata.js');
 
 exports.mintNFT = async (req, res) => {
   try {
-    // Extract the request body data
-    const data = req.body;
-    const { address, signature } = data;
+    const { address, signature, ...otherData } = req.body;
 
     console.log('Received address:', address);
-console.log('Received signature:', signature);
+    console.log('Received signature:', signature);
 
-    // Ensure the signature is a string and starts with '0x'
     if (typeof signature !== 'string' || !signature.startsWith('0x')) {
       return res.status(400).json({ success: false, error: 'Invalid signature format' });
     }
 
-    // Verify the signature
     let signerAddress;
     try {
       signerAddress = ethers.verifyMessage('Mint NFT', signature);
+      if (signerAddress.toLowerCase() !== address.toLowerCase()) {
+        return res.status(400).json({ success: false, error: 'Signature does not match the provided address' });
+      }
     } catch (error) {
       console.error('Signature verification error:', error);
       return res.status(400).json({ success: false, error: 'Invalid signature' });
     }
-    
-  
-    // Save the minter data using the saveMinterData function
-    nftMinterData.saveMinterData(data);
 
-    // Send a success response with the saved data and transaction hash
+    console.log("----------------- Calling Pinata -----------------");
+    const ipfsResponse = await pinJSONtoIPFS(otherData);
+    if (!ipfsResponse) {
+      return res.status(500).json({ success: false, error: 'Failed to pin data to IPFS' });
+    }
+    console.log("IPFS Response ----->", ipfsResponse);
+
+    const tokenURI = `ipfs://${ipfsResponse}`;
+
+    // Save the minter data
+    await nftMinterData.saveMinterData({ address, ...otherData });
+
+    // Here, you would typically interact with your smart contract to actually mint the NFT
+    // For example:
+    // const provider = new ethers.providers.JsonRpcProvider(YOUR_RPC_URL);
+    // const signer = new ethers.Wallet(PRIVATE_KEY, provider);
+    // const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    // const tx = await contract.mintNFT(address, tokenURI);
+    // const receipt = await tx.wait();
+
     res.status(200).json({ 
-      message: 'Signature verified. Ready to mint.',
+      success: true,
+      message: 'NFT minting prepared successfully',
       contractAddress: contractAddress,
       contractABI: contractABI,
-      data: data,
-      tokenURI: "ipfs://your-token-uri" 
+      tokenURI: tokenURI,
+      // txHash: receipt.transactionHash // Uncomment if actually minting
     });
   } catch (error) {
-    // Log the error and send a failure response
-    console.error('Error minting NFT:', error);
-    res.status(500).json({ message: 'Failed to mint NFT and save minter data', error: error.message });
+    console.error('Error in mintNFT:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to process NFT minting', 
+      error: error.message 
+    });
   }
 };
