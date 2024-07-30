@@ -7,7 +7,9 @@ const { pinJSONtoIPFS } = require('../../models/pinata.js');
 
 exports.mintNFT = async (req, res) => {
   try {
-    const { address, signature, ...otherData } = req.body;
+    const { address, signature } = req.body;
+
+    const data = req.body;
 
     console.log('Received address:', address);
     console.log('Received signature:', signature);
@@ -28,7 +30,7 @@ exports.mintNFT = async (req, res) => {
     }
 
     console.log("----------------- Calling Pinata -----------------");
-    const ipfsResponse = await pinJSONtoIPFS(otherData);
+    const ipfsResponse = await pinJSONtoIPFS(data);
     if (!ipfsResponse) {
       return res.status(500).json({ success: false, error: 'Failed to pin data to IPFS' });
     }
@@ -37,19 +39,11 @@ exports.mintNFT = async (req, res) => {
     const tokenURI = `ipfs://${ipfsResponse}`;
 
     // Save the minter data
-    await nftMinterData.saveMinterData({ address, ...otherData });
-
-    // Here, you would typically interact with your smart contract to actually mint the NFT
-    // For example:
-    // const provider = new ethers.providers.JsonRpcProvider(YOUR_RPC_URL);
-    // const signer = new ethers.Wallet(PRIVATE_KEY, provider);
-    // const contract = new ethers.Contract(contractAddress, contractABI, signer);
-    // const tx = await contract.mintNFT(address, tokenURI);
-    // const receipt = await tx.wait();
+    await nftMinterData.saveMinterData({ address, ...data });
 
     res.status(200).json({ 
       success: true,
-      message: 'NFT minting prepared successfully',
+      message: 'Signature verified. Ready to mint.',
       contractAddress: contractAddress,
       contractABI: contractABI,
       tokenURI: tokenURI,
