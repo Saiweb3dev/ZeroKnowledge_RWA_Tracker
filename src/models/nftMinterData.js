@@ -27,17 +27,28 @@ function saveMinterData(data) {
     ...data,
     timestamp: formattedDateTime,
   };
-  const fileName = `${minterData.name}.json`;
+  const fileName = `${minterData.address}.json`;
   const filePath = path.join(MINTER_DATA_PATH, fileName);
 
   // Corrected: Check if the directory exists, if not, create it
   if (!fs.existsSync(MINTER_DATA_PATH)) {
     fs.mkdirSync(MINTER_DATA_PATH, { recursive: true });
   }
+  let existingData = {};
+  if(fs.existsSync(filePath)) {
+    try{
+      const fileContent = fs.readFileSync(filePath,'utf8');
+      existingData = JSON.parse(fileContent);
+    } catch (error){
+      console.error('Error Reading existing data:',error);
+    }
+  }
+   // TODO: As for of now it is address but need to use the tokenId also this should be only after successfully minting with tx hash
+    existingData[minterData.address] = minterData;
 
   // Attempt to write the minter data to the file
   try {
-    fs.writeFileSync(filePath, JSON.stringify(minterData, null, 2));
+    fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2));
     console.log(`Minter data saved to ${filePath}`);
   } catch (error) {
     console.error(`Failed to save minter data to ${filePath}:`, error);
