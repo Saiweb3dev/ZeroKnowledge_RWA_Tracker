@@ -38,9 +38,6 @@ exports.mintNFT = async (req, res) => {
 
     const tokenURI = `ipfs://${ipfsResponse}`;
 
-    // Save the minter data
-    await nftMinterData.saveMinterData({ address, ...data });
-
     res.status(200).json({ 
       success: true,
       message: 'Signature verified. Ready to mint.',
@@ -58,3 +55,16 @@ exports.mintNFT = async (req, res) => {
     });
   }
 };
+
+exports.saveMintData = async (req, res) => {
+  try{
+    console.log("Saving Mint Data");
+    const data = req.body;
+
+    await nftMinterData.saveMinterData(data);
+    res.status(200).json({ success: true, message: 'Data saved successfully' });
+  } catch (error) {
+    console.error('Error in saveMintData:', error);
+    res.status(500).json({ success: false, message: 'Failed to save data', error: error.message });
+  }
+  }

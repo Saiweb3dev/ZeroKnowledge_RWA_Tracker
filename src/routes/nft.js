@@ -18,6 +18,8 @@ router.get('/getAssetDescription/:assetId', descriptionController.getAssetDescri
 
 router.post('/mintNFT', nftController.mintNFT);
 
+router.post('/updateMintingData',nftController.saveMintData)
+
 
 // Export the configured router so it can be used by the main server file
 module.exports = router;
