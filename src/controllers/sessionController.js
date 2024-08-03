@@ -1,11 +1,18 @@
 // Import required modules
-const fs = require('fs').promises; // File system promises API for async file operations
-const path = require('path'); // Path utilities for handling file paths
-const crypto = require('crypto'); // Cryptography functions for generating unique IDs
+const fs = require("fs").promises; // File system promises API for async file operations
+const path = require("path"); // Path utilities for handling file paths
+const crypto = require("crypto"); // Cryptography functions for generating unique IDs
+
+const axios = require("axios");
 
 // Define constants for session and user key database paths
-const SESSION_DATA_PATH = path.join(__dirname, '..', 'data', 'sessionDatabase');
-const USER_KEY_DATABASE = path.join(__dirname, '..', 'data', 'userKeyDatabase.json');
+const SESSION_DATA_PATH = path.join(__dirname, "..", "data", "sessionDatabase");
+const MINTER_DATABASE_DIR = path.join(
+  __dirname,
+  "..",
+  "data",
+  "minterDatabase"
+);
 
 /**
  * Ensures the session directory exists, creating it if necessary.
@@ -14,7 +21,7 @@ async function ensureSessionDirectoryExists() {
   try {
     await fs.mkdir(SESSION_DATA_PATH, { recursive: true });
   } catch (error) {
-    console.error('Error ensuring session directory exists:', error);
+    console.error("Error ensuring session directory exists:", error);
   }
 }
 
@@ -25,7 +32,7 @@ ensureSessionDirectoryExists();
  * Generates a unique ID using cryptographic random bytes.
  */
 function generateUniqueId() {
-  return crypto.randomBytes(16).toString('hex');
+  return crypto.randomBytes(16).toString("hex");
 }
 
 /**
@@ -36,7 +43,7 @@ async function createSession(userData) {
   const sessionId = generateUniqueId();
   const sessionData = {
     ...userData,
-    timestamp: Date.now()
+    timestamp: Date.now(),
   };
 
   try {
@@ -45,11 +52,11 @@ async function createSession(userData) {
 
     const filePath = path.join(SESSION_DATA_PATH, `${sessionId}.json`);
     await fs.writeFile(filePath, JSON.stringify(sessionData));
-    
+
     console.log(`Session file created: ${filePath}`);
     return sessionId;
   } catch (error) {
-    console.error('Error creating session:', error);
+    console.error("Error creating session:", error);
     throw error;
   }
 }
@@ -62,7 +69,7 @@ async function getSessionData(sessionId) {
   const sessionFilePath = path.join(SESSION_DATA_PATH, `${sessionId}.json`);
   console.log(`Attempting to read session data from: ${sessionFilePath}`);
   try {
-    const sessionDataRaw = await fs.readFile(sessionFilePath, 'utf8');
+    const sessionDataRaw = await fs.readFile(sessionFilePath, "utf8");
     console.log(`Successfully read session data from: ${sessionFilePath}`);
     return JSON.parse(sessionDataRaw);
   } catch (error) {
@@ -81,33 +88,42 @@ async function deleteSession(sessionId) {
 }
 
 /**
- * Loads the user key database from a JSON file.
- */
-async function loadUserKeyDatabase() {
-  try {
-    const rawData = await fs.readFile(USER_KEY_DATABASE, 'utf8');
-    const parsedData = JSON.parse(rawData);
-    return parsedData;
-  } catch (error) {
-    console.error('Error loading user key database:', error);
-    return {};
-  }
-}
-
-/**
  * Retrieves user data from the user key database.
  * @param {string} address - User address.
  * @param {string} id - User ID.
  */
 async function getUserData(address, id) {
-  const userKeyDatabase = await loadUserKeyDatabase();
-  const userData = userKeyDatabase[address]?.[id];
-  if (userData) {
-    // Simulating decryption (replace with actual decryption logic)
-    const decryptedData = Buffer.from(userData.encryptedData, 'base64').toString('utf-8');
-    return decryptedData;
+  try {
+    const filePath = path.join(MINTER_DATABASE_DIR, `${address}.json`);
+    console.log("File Path --> ", filePath);
+    const rawData = await fs.readFile(filePath, "utf8");
+    const parsedData = JSON.parse(rawData);
+
+    const userData = parsedData[id];
+    console.log("User Data in DB --> ", userData);
+
+    if (userData && userData.tokenURI) {
+
+      console.log("Fetching Data ...")
+      //Extract CID from IPFS URI
+      const cid = userData.tokenURI.replace("ipfs://", "");
+
+      //Fetch IPFS content
+      const ipfsGatewayURL = `https://ipfs.io/ipfs/${cid}`;
+      const response = await axios.get(ipfsGatewayURL);
+
+      console.log("IPFS response --> ",response.data)
+      return response.data;
+    }
+
+    return null;
+  } catch (error) {
+    console.error(
+      `Error loading user data for address ${address} and id ${id}:`,
+      error
+    );
+    return null;
   }
-  return null;
 }
 
 // Export the controller functions so they can be used elsewhere in the application
@@ -115,5 +131,5 @@ module.exports = {
   createSession,
   getSessionData,
   deleteSession,
-  getUserData
+  getUserData,
 };

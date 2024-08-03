@@ -18,13 +18,13 @@ async function processEthData(data) {
     console.log("Hash Done ✓");
 
     // step 2: Get json data using the address as key
-    const jsonData = await getJsonData(address);
+    const jsonData = await getJsonData(address,id);
     if (!jsonData) {
       throw new Error("User Data Not found");
     }
     console.log("Json data Done ✓");
 
-    const dbId = jsonData.id;
+    const dbId = jsonData.tokenId;
     if (dbId !== id) {
       throw new Error("Id is not same in EthController");
     }
@@ -36,7 +36,7 @@ async function processEthData(data) {
 
     // step 4 : Process Address & string from Json data
     const dbAddressFields = ethAddressToFieldArray(jsonData.address);
-    const dbStringFields = stringToFieldArray(jsonData.inputString);
+    const dbStringFields = stringToFieldArray(jsonData.key);
     console.log("DB req data Done ✓");
 
     // step 5 : Compare data
