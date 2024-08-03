@@ -3,11 +3,10 @@ const contractData = require('../../deployments/hardhat/RWA_Tokenizer.json');
 
 const contractABI = contractData.abi;
 const contractAddress = contractData.address;
-
+const SEPOLIA_RPC_URL ="https://eth-sepolia.g.alchemy.com/v2/8cAuHYtk5pZaV5S4z9QKIKLbAj3JEc3i";
 // Connect to local Hardhat network
-// const provider = new ethers.JsonRpcProvider('http://127.0.0.1:8545');
+const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
 
-const provider = "ehhlo"
 // Create a contract instance
 const contract = new ethers.Contract(contractAddress, contractABI, provider)
 
