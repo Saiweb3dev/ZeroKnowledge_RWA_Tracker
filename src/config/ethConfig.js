@@ -2,10 +2,17 @@ const {ethers} = require('ethers')
 const contractData = require('../../deployments/hardhat/RWA_Tokenizer.json');
 const contractABI = contractData.abi;
 const contractAddress = contractData.address;
+<<<<<<< HEAD
 
 // Connect to local Hardhat network
 const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545/");
+=======
+>>>>>>> parent of b2440bf (deployment testing code changes)
 
+// Connect to local Hardhat network
+// const provider = new ethers.JsonRpcProvider('http://127.0.0.1:8545');
+
+const provider = "ehhlo"
 // Create a contract instance
 const contract = new ethers.Contract(contractAddress, contractABI, provider)
 
