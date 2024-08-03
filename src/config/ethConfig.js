@@ -1,5 +1,5 @@
 const {ethers} = require('ethers')
-const contractData = require('../../deployments/localhost/RWA_Tokenizer.json');
+const contractData = require('../../deployments/hardhat/RWA_Tokenizer.json');
 
 const contractABI = contractData.abi;
 const contractAddress = contractData.address;

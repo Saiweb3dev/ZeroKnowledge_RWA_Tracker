@@ -37,7 +37,7 @@ async function main() {
     // console.log("Proof sent -> ",proof)
 
     // Use the inputs from the proof.json file
-    const input =  proofJson.inputs;
+    const input =  "0x000000000000000000000000000000000000000000000000000000000000007b";
 
     // Connect to the local Hardhat network
     const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545/");
