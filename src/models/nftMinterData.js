@@ -43,8 +43,8 @@ function saveMinterData(data) {
       console.error('Error Reading existing data:',error);
     }
   }
-   // TODO: As for of now it is address but need to use the tokenId also this should be only after successfully minting with tx hash
-    existingData[minterData.address] = minterData;
+    existingData[minterData.tokenId
+    ] = minterData;
 
   // Attempt to write the minter data to the file
   try {
@@ -54,6 +54,7 @@ function saveMinterData(data) {
     console.error(`Failed to save minter data to ${filePath}:`, error);
     throw error; // Rethrow the error to allow further handling if necessary
   }
+  console.log("----------------- Finished NFT data Process Successfully -----------------");
 }
 
 module.exports = {

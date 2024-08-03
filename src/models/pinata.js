@@ -8,7 +8,7 @@ require('dotenv').config(); // Load environment variables from .env file
  * @returns {Promise<string>} The IPFS hash of the pinned data.
  */
 const pinJSONtoIPFS = async (jsonData) => {
-  console.log("----------------- Started Pinata -----------------");
+  console.log("----------------- Started Pinata Pinning -----------------");
   
   // Retrieve JWT token from environment variables for authentication with Pinata API
   const JWT = process.env.PINATA_SECRET_JWT;
@@ -35,13 +35,13 @@ const pinJSONtoIPFS = async (jsonData) => {
         Authorization: `Bearer ${JWT}`, // Include the JWT token for authentication
       },
     });
-    
-    console.log(response.data); // Log the response data for debugging purposes
+    console.log("----------------- Pinata Pinning Finished -----------------");
     return response.data.IpfsHash; // Return the IPFS hash of the pinned data
   } catch (error) {
     console.error('Error pinning JSON to IPFS:', error.response ? error.response.data : error.message); // Log any errors encountered during the request
     throw error; // Rethrow the error to be handled by the caller
   }
+  
 };
 
 module.exports = { pinJSONtoIPFS }; // Export the function for use in other modules
